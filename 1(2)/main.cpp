@@ -14,7 +14,7 @@ struct Student {
     std::string teacherLastName;
     std::string teacherFirstName;
 };
-// Завантаження студентів з файлу
+
 std::vector<Student> loadStudents(const std::string& filename) {
     std::vector<Student> students;
     std::ifstream file(filename);
@@ -43,7 +43,7 @@ std::vector<Student> loadStudents(const std::string& filename) {
 
     return students;
 }
-// Пошук студента за прізвищем
+
 void searchByStudent(const std::vector<Student>& students, const std::string& lastName) {
     auto start = std::chrono::high_resolution_clock::now();
     bool found = false;
@@ -67,7 +67,7 @@ void searchByStudent(const std::vector<Student>& students, const std::string& la
     std::chrono::duration<double> searchTime = end - start;
     std::cout << "Search Time: " << searchTime.count() << " seconds" << std::endl;
 }
-// Пошук за прізвищем та номером автобуса
+
 void searchByStudentBus(const std::vector<Student>& students, const std::string& lastName) {
     auto start = std::chrono::high_resolution_clock::now();
     bool found = false;
@@ -89,7 +89,7 @@ void searchByStudentBus(const std::vector<Student>& students, const std::string&
     std::chrono::duration<double> searchTime = end - start;
     std::cout << "Search Time: " << searchTime.count() << " seconds" << std::endl;
 }
-// Пошук за прізвищем вчителя
+
 void searchByTeacher(const std::vector<Student>& students, const std::string& teacherLastName) {
     auto start = std::chrono::high_resolution_clock::now();
     bool found = false;
@@ -111,7 +111,7 @@ void searchByTeacher(const std::vector<Student>& students, const std::string& te
     std::chrono::duration<double> searchTime = end - start;
     std::cout << "Search Time: " << searchTime.count() << " seconds" << std::endl;
 }
-// Пошук за класом
+
 void searchByClassroom(const std::vector<Student>& students, int classroom) {
     auto start = std::chrono::high_resolution_clock::now();
     bool found = false;
@@ -133,7 +133,7 @@ void searchByClassroom(const std::vector<Student>& students, int classroom) {
     std::chrono::duration<double> searchTime = end - start;
     std::cout << "Search Time: " << searchTime.count() << " seconds" << std::endl;
 }
-// Пошук номером автобуса
+
 void searchByBus(const std::vector<Student>& students, int busNumber) {
     auto start = std::chrono::high_resolution_clock::now();
     bool found = false;
@@ -155,7 +155,7 @@ void searchByBus(const std::vector<Student>& students, int busNumber) {
     std::chrono::duration<double> searchTime = end - start;
     std::cout << "Search Time: " << searchTime.count() << " seconds" << std::endl;
 }
-// Основний цикл
+
 void commandLoop(const std::vector<Student>& students) {
     std::string command;
     std::cout << "Enter command: ";
