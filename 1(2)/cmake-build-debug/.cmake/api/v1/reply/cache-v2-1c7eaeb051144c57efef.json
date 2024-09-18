@@ -2,6 +2,42 @@
 	"entries" : 
 	[
 		{
+			"name" : "1_2__BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "E:/Uknord5he/BH3/obd/3-obd/1(2)/cmake-build-debug"
+		},
+		{
+			"name" : "1_2__IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "1_2__SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "E:/Uknord5he/BH3/obd/3-obd/1(2)"
+		},
+		{
 			"name" : "CMAKE_ADDR2LINE",
 			"properties" : 
 			[
@@ -55,7 +91,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "e:/Uknord5he/BH3/obd/1/Schoolsearch/cmake-build-debug"
+			"value" : "e:/Uknord5he/BH3/obd/3-obd/1(2)/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -575,7 +611,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E:/Uknord5he/BH3/obd/1/Schoolsearch/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "E:/Uknord5he/BH3/obd/3-obd/1(2)/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -647,7 +683,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "E:/Uknord5he/BH3/obd/1/Schoolsearch"
+			"value" : "E:/Uknord5he/BH3/obd/3-obd/1(2)"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -659,7 +695,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Program Files (x86)/Project1"
+			"value" : "C:/Program Files (x86)/1_2_"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -875,7 +911,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "Schoolsearch"
+			"value" : "1_2_"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1268,78 +1304,6 @@
 			],
 			"type" : "BOOL",
 			"value" : "FALSE"
-		},
-		{
-			"name" : "Project1_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "E:/Uknord5he/BH3/obd/1/Schoolsearch/cmake-build-debug"
-		},
-		{
-			"name" : "Project1_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "Project1_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "E:/Uknord5he/BH3/obd/1/Schoolsearch"
-		},
-		{
-			"name" : "Schoolsearch_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "E:/Uknord5he/BH3/obd/1/Schoolsearch/cmake-build-debug"
-		},
-		{
-			"name" : "Schoolsearch_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "Schoolsearch_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "E:/Uknord5he/BH3/obd/1/Schoolsearch"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",
