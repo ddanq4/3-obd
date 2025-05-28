@@ -1,34 +1,56 @@
-USE farm_db;
+CREATE TABLE Department (
+    Dept_ID INT PRIMARY KEY,
+    Dept_Name VARCHAR(100)
+);
+GO
 
---  1. Повысить зарплату Иванову на 10%
-UPDATE worker
-SET Salary = Salary * 1.10
-WHERE Worker_ID = 1 AND Brigade_ID = 1 AND Farm_ID = 1;
+CREATE TABLE Employee (
+    Emp_ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Dept_ID INT,
+    FOREIGN KEY (Dept_ID) REFERENCES Department(Dept_ID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+GO
 
---  2. Обновить статус Шевченка на "Відпустка"
-UPDATE worker
-SET Status = 'Відпустка'
-WHERE Worker_ID = 2 AND Brigade_ID = 1 AND Farm_ID = 1;
+CREATE TABLE Equipment (
+    Equip_ID INT PRIMARY KEY,
+    Emp_ID INT,
+    Equipment_Name VARCHAR(100),
+    FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+GO
 
---  3. Изменить площадь фермы "Ферма Південна"
-UPDATE farm
-SET Area = 175
-WHERE Farm_ID = 1;
 
---  4. Переименовать культуру "Соняшник" в "Соняшник гібрид"
-UPDATE culture
-SET Name = 'Соняшник гібрид'
-WHERE Culture_ID = 3;
+DROP TABLE Equipment;
+DROP TABLE Employee;
+DROP TABLE Department;
 
---  5. Обновить статус техники по ключам
-UPDATE tech
-SET Status = 'В ремонті завершено'
-WHERE Tech_ID = 2 AND Brigade_ID = 2 AND Farm_ID = 2;
 
---  6. Удалить работника Дмитра Лисенка
-DELETE FROM worker
-WHERE Worker_ID = 4 AND Brigade_ID = 2 AND Farm_ID = 2;
+ALTER TABLE Worker
+ADD Tech_Type NVARCHAR(50) NULL;
 
---  7. Удалить транзакцию "Закупка техніки"
-DELETE FROM transaction
-WHERE Transaction_ID = 1;
+WITH Types AS (
+    SELECT DISTINCT Type FROM Tech
+),
+Randomized AS (
+    SELECT 
+        w.Worker_ID,
+        t.Type,
+        ROW_NUMBER() OVER (ORDER BY NEWID()) AS rn
+    FROM Worker w
+    CROSS JOIN Types t
+)
+
+UPDATE w
+SET Tech_Type = r.Type
+FROM Worker w
+JOIN (
+    SELECT Worker_ID, Type,
+           ROW_NUMBER() OVER (PARTITION BY Worker_ID ORDER BY NEWID()) AS rnk
+    FROM Randomized
+) r ON w.Worker_ID = r.Worker_ID
+WHERE r.rnk = 1 AND w.Worker_ID <= 80;

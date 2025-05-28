@@ -1,7 +1,6 @@
-USE FarmDB;
+USE farm_db;
 GO
 
--- Таблица Culture
 CREATE TABLE Culture (
     Culture_ID INT PRIMARY KEY,
     Name VARCHAR(50),
@@ -11,7 +10,6 @@ CREATE TABLE Culture (
 );
 GO
 
--- Таблица Farm
 CREATE TABLE Farm (
     Farm_ID INT PRIMARY KEY,
     Name VARCHAR(50),
@@ -20,7 +18,6 @@ CREATE TABLE Farm (
 );
 GO
 
--- Таблица Brigade
 CREATE TABLE Brigade (
     Brigade_ID INT,
     Farm_ID INT,
@@ -31,7 +28,6 @@ CREATE TABLE Brigade (
 );
 GO
 
--- Таблица Transaction
 CREATE TABLE [Transaction] (
     Transaction_ID INT PRIMARY KEY,
     Transaction_Date DATE,
@@ -40,7 +36,6 @@ CREATE TABLE [Transaction] (
 );
 GO
 
--- Таблица Worker без внешнего ключа на Brigadir_ID
 CREATE TABLE Worker (
     Worker_ID INT,
     Brigade_ID INT,
@@ -59,18 +54,15 @@ CREATE TABLE Worker (
 );
 GO
 
--- Добавляем уникальность на Worker_ID
 ALTER TABLE Worker
 ADD CONSTRAINT UQ_WorkerID UNIQUE (Worker_ID);
 GO
 
--- Теперь можно создать внешний ключ на Brigadir_ID
 ALTER TABLE Worker
 ADD CONSTRAINT FK_Brigadir
 FOREIGN KEY (Brigadir_ID) REFERENCES Worker(Worker_ID);
 GO
 
--- Таблица Tech
 CREATE TABLE Tech (
     Tech_ID INT,
     Brigade_ID INT,

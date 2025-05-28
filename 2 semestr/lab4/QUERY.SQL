@@ -1,175 +1,409 @@
-SELECT * FROM Culture WHERE Amount > 30;
+-- 1
+SELECT * 
+FROM [Culture] 
+WHERE [Amount] > 30;
 
-SELECT * FROM Farm WHERE Area > 100;
+-- 2
+SELECT * 
+FROM [Farm] 
+WHERE [Area] > 100;
 
-SELECT * FROM Worker WHERE Status = 'Активний';
+-- 3
+SELECT * 
+FROM [Worker] 
+WHERE [Status] = 'Active';
 
-SELECT * FROM Transaction WHERE Transaction_type = 'Зарплата';
+-- 4
+SELECT * 
+FROM [Transaction] 
+WHERE [Transaction_type] = 'Salary';
 
-SELECT * FROM Tech WHERE Status = 'Робочий';
+-- 5
+SELECT * 
+FROM [Tech] 
+WHERE [Status] = 'Working';
+
+-- 6
+SELECT * 
+FROM [Culture] 
+WHERE [Season] = 'Spring' 
+  AND [Amount] > 25;
+
+-- 7
+SELECT * 
+FROM [Farm] 
+WHERE [Area] > 100 
+   OR [Culture_ID] < 10;
+
+-- 8
+SELECT * 
+FROM [Worker] 
+WHERE [Status] = 'Active' 
+  AND [Salary] > 10000;
+
+-- 9
+SELECT * 
+FROM [Tech] 
+WHERE [Status] <> 'Working';
+
+-- 10
+SELECT * 
+FROM [Transaction] 
+WHERE [Transaction_type] = 'Salary' 
+   OR [Money_transfer] > 30000;
+
+-- 11
+SELECT * 
+FROM [Culture] 
+WHERE [Name] LIKE 'C%';
+
+-- 12
+SELECT * 
+FROM [Farm] 
+WHERE [Farm_ID] LIKE '%1';
+
+-- 13
+SELECT * 
+FROM [Worker] 
+WHERE [Surname] LIKE 'Surname1_';
+
+-- 14
+SELECT * 
+FROM [Tech] 
+WHERE [Name] LIKE '%tor';
+
+-- 15
+SELECT * 
+FROM [Transaction] 
+WHERE [Transaction_type] LIKE 'S%y';
+
+-- 16
+SELECT f.[Name] AS [FarmName], c.[Name] AS [CultureName]
+FROM [Farm] AS f
+JOIN [Culture] AS c 
+  ON f.[Culture_ID] = c.[Culture_ID];
+
+-- 17
+SELECT b.[Name] AS [BrigadeName], f.[Name] AS [FarmName]
+FROM [Brigade] AS b
+JOIN [Farm] AS f 
+  ON b.[Farm_ID] = f.[Farm_ID];
+
+-- 18
+SELECT w.[Name], w.[Surname], b.[Name] AS [BrigadeName]
+FROM [Worker] AS w
+JOIN [Brigade] AS b 
+  ON w.[Brigade_ID] = b.[Brigade_ID]
+ AND w.[Farm_ID]    = b.[Farm_ID];
+
+-- 19
+SELECT t.[Name] AS [TechName], b.[Name] AS [BrigadeName]
+FROM [Tech] AS t
+JOIN [Brigade] AS b 
+  ON t.[Brigade_ID] = b.[Brigade_ID]
+ AND t.[Farm_ID]    = b.[Farm_ID];
+
+-- 20
+SELECT w.[Name], w.[Surname], tr.[Transaction_type], tr.[Money_transfer]
+FROM [Worker] AS w
+JOIN [Transaction] AS tr 
+  ON w.[Transaction_ID] = tr.[Transaction_ID];
+
+-- 21
+SELECT f.[Name] AS [FarmName], c.[Name] AS [CultureName]
+FROM [Farm] AS f
+LEFT JOIN [Culture] AS c 
+  ON f.[Culture_ID] = c.[Culture_ID];
+
+-- 22
+SELECT w.[Name], w.[Surname], tr.[Transaction_type]
+FROM [Worker] AS w
+LEFT JOIN [Transaction] AS tr 
+  ON w.[Transaction_ID] = tr.[Transaction_ID];
+
+-- 23
+SELECT t.[Name] AS [TechName], b.[Name] AS [BrigadeName]
+FROM [Brigade] AS b
+RIGHT JOIN [Tech] AS t 
+  ON t.[Brigade_ID] = b.[Brigade_ID]
+ AND t.[Farm_ID]    = b.[Farm_ID];
+
+-- 24
+SELECT b.[Name] AS [BrigadeName], w.[Name] AS [WorkerName]
+FROM [Brigade] AS b
+LEFT JOIN [Worker] AS w 
+  ON w.[Brigade_ID] = b.[Brigade_ID]
+ AND w.[Farm_ID]    = b.[Farm_ID];
+
+-- 25
+SELECT c.[Name] AS [CultureName], f.[Name] AS [FarmName]
+FROM [Culture] AS c
+RIGHT JOIN [Farm] AS f 
+  ON f.[Culture_ID] = c.[Culture_ID];
+
+-- 26
+SELECT * 
+FROM [Worker]
+WHERE [Salary] > (
+    SELECT AVG([Salary]) 
+    FROM [Worker]
+);
+
+-- 27
+SELECT * 
+FROM [Farm]
+WHERE [Culture_ID] IN (
+    SELECT [Culture_ID] 
+    FROM [Culture] 
+    WHERE [Season] = 'Spring'
+);
+
+-- 28
+SELECT * 
+FROM [Transaction]
+WHERE [Money_transfer] > (
+    SELECT MAX([Money_transfer]) 
+    FROM [Transaction] 
+    WHERE [Transaction_type] = 'Salary'
+);
+
+-- 29
+SELECT [Name], [Area] 
+FROM [Farm]
+WHERE [Farm_ID] IN (
+    SELECT [Farm_ID] 
+    FROM [Brigade] 
+    WHERE [Workers_amount] > 20
+);
+
+-- 30
+SELECT * 
+FROM [Tech]
+WHERE [Transaction_ID] IN (
+    SELECT [Transaction_ID] 
+    FROM [Transaction] 
+    WHERE [Transaction_type] = 'Repair'
+);
+
+-- 31
+SELECT f.[Culture_ID], COUNT(*) AS [FarmCount]
+FROM [Farm] AS f
+GROUP BY f.[Culture_ID]
+HAVING COUNT(*) > 1;
+
+-- 32
+SELECT w.[Position], COUNT(*) AS [WorkerCount]
+FROM [Worker] AS w
+GROUP BY w.[Position]
+HAVING COUNT(*) > 10;
+
+-- 33
+SELECT b.[Farm_ID], AVG(b.[Workers_amount]) AS [AvgWorkers]
+FROM [Brigade] AS b
+GROUP BY b.[Farm_ID]
+HAVING AVG(b.[Workers_amount]) > 15;
+
+-- 34
+SELECT t.[Status], COUNT(*) AS [TechCount]
+FROM [Tech] AS t
+GROUP BY t.[Status]
+HAVING COUNT(*) >= 5;
+
+-- 35
+SELECT c.[Fertilizers], COUNT(f.[Farm_ID]) AS [FarmCount]
+FROM [Culture] AS c
+JOIN [Farm] AS f 
+  ON c.[Culture_ID] = f.[Culture_ID]
+GROUP BY c.[Fertilizers]
+HAVING COUNT(f.[Farm_ID]) > 2;
+
+-- 36
+SELECT c.[Season], COUNT(f.[Farm_ID]) AS [FarmCount]
+FROM [Culture] AS c
+JOIN [Farm] AS f 
+  ON f.[Culture_ID] = c.[Culture_ID]
+GROUP BY c.[Season]
+HAVING COUNT(f.[Farm_ID]) >= 1;
+
+-- 37
+SELECT w.[Name], w.[Surname], w.[Salary]
+FROM [Worker] AS w
+JOIN [Brigade] AS b 
+  ON w.[Brigade_ID] = b.[Brigade_ID]
+ AND w.[Farm_ID]    = b.[Farm_ID]
+WHERE w.[Salary] > (
+    SELECT AVG([Salary]) 
+    FROM [Worker]
+);
+
+-- 38
+SELECT t.[Name] AS [TechName], t.[Status], tr.[Money_transfer]
+FROM [Tech] AS t
+JOIN [Transaction] AS tr 
+  ON t.[Transaction_ID] = tr.[Transaction_ID]
+WHERE tr.[Money_transfer] > 20000;
+
+-- 39
+SELECT f.[Name] AS [FarmName], AVG(w.[Salary]) AS [AvgSalary]
+FROM [Farm] AS f
+JOIN [Brigade] AS b 
+  ON f.[Farm_ID] = b.[Farm_ID]
+JOIN [Worker] AS w 
+  ON w.[Brigade_ID] = b.[Brigade_ID]
+ AND w.[Farm_ID]    = b.[Farm_ID]
+GROUP BY f.[Farm_ID], f.[Name]
+HAVING AVG(w.[Salary]) > 10000;
+
+-- 40
+SELECT c.[Name] AS [CultureName], COUNT(f.[Farm_ID]) AS [FarmCount]
+FROM [Culture] AS c
+JOIN [Farm] AS f 
+  ON f.[Culture_ID] = c.[Culture_ID]
+WHERE f.[Area] > 100
+GROUP BY c.[Culture_ID], c.[Name]
+HAVING COUNT(f.[Farm_ID]) >= 2;
+
+-- 41
+SELECT w.[Name], w.[Surname], b.[Name] AS [BrigadeName]
+FROM [Worker] AS w
+JOIN [Brigade] AS b 
+  ON w.[Brigade_ID] = b.[Brigade_ID]
+ AND w.[Farm_ID]    = b.[Farm_ID]
+WHERE w.[Status] = 'Active';
+
+-- 42
+SELECT f.[Name] AS [FarmName], c.[Name] AS [CultureName]
+FROM [Farm] AS f
+JOIN [Culture] AS c 
+  ON f.[Culture_ID] = c.[Culture_ID]
+WHERE c.[Season] = 'Spring';
+
+-- 43
+SELECT t.[Name] AS [TechName], tr.[Money_transfer]
+FROM [Tech] AS t
+JOIN [Transaction] AS tr 
+  ON t.[Transaction_ID] = tr.[Transaction_ID]
+WHERE tr.[Money_transfer] > 20000;
+
+-- 44
+SELECT b.[Brigade_ID], MIN(b.[Name]) AS [BrigadeName], COUNT(w.[Worker_ID]) AS [WorkerCount]
+FROM [Brigade] AS b
+JOIN [Worker] AS w 
+  ON w.[Brigade_ID] = b.[Brigade_ID]
+ AND w.[Farm_ID]    = b.[Farm_ID]
+WHERE w.[Salary] > 10000
+GROUP BY b.[Brigade_ID];
+
+-- 45
+SELECT w.[Name], w.[Surname], tr.[Transaction_type]
+FROM [Worker] AS w
+JOIN [Transaction] AS tr 
+  ON w.[Transaction_ID] = tr.[Transaction_ID]
+WHERE tr.[Transaction_type] = 'Salary';
 
 
 
-SELECT * FROM Culture WHERE Season = 'Весна' AND Amount > 25;
+--LAB3
 
-SELECT * FROM Farm WHERE Area > 100 OR Culture_ID < 10;
+SELECT 
+  w.Name        AS WorkerName,
+  w.Surname     AS WorkerSurname,
+  f.Name        AS FarmName,
+  c.Name        AS CultureName
+FROM Worker   AS w
+JOIN Brigade  AS b ON w.Brigade_ID = b.Brigade_ID
+                  AND w.Farm_ID    = b.Farm_ID
+JOIN Farm     AS f ON b.Farm_ID    = f.Farm_ID
+JOIN Culture  AS c ON f.Culture_ID = c.Culture_ID;
+GO
 
-SELECT * FROM Worker WHERE Status = 'Активний' AND Salary > 10000;
-
-SELECT * FROM Tech WHERE NOT Status = 'Робочий';
-
-SELECT * FROM Transaction WHERE Transaction_type = 'Зарплата' OR Money_transfer > 30000;
-
-
-SELECT * FROM Culture WHERE Name LIKE 'К%';
-
-SELECT * FROM Farm WHERE Farm_ID LIKE '%1';
-
-SELECT * FROM Worker WHERE Surname LIKE 'Прізвище1_';
-
-SELECT * FROM Tech WHERE Name LIKE '%тор';
-
-SELECT * FROM Transaction WHERE Transaction_type LIKE 'З%а';
-
-
-SELECT f.Name AS FarmName, c.Name AS CultureName
-FROM Farm f
-JOIN Culture c ON f.Culture_ID = c.Culture_ID;
-
-SELECT b.Name AS BrigadeName, f.Name AS FarmName
-FROM Brigade b
-JOIN Farm f ON b.Farm_ID = f.Farm_ID;
-
-SELECT w.Name, w.Surname, b.Name AS BrigadeName
-FROM Worker w
-JOIN Brigade b ON w.Brigade_ID = b.Brigade_ID AND w.Farm_ID = b.Farm_ID;
-
-SELECT t.Name AS TechName, b.Name AS BrigadeName
-FROM Tech t
-JOIN Brigade b ON t.Brigade_ID = b.Brigade_ID AND t.Farm_ID = b.Farm_ID;
-
-SELECT w.Name, w.Surname, tr.Transaction_type, tr.Money_transfer
-FROM Worker w
-JOIN Transaction tr ON w.Transaction_ID = tr.Transaction_ID;
+SELECT 
+  c.Name           AS CultureName,
+  AVG(f.Area)      AS AvgAreaByCulture
+FROM Culture AS c
+JOIN Farm    AS f 
+  ON c.Culture_ID = f.Culture_ID
+GROUP BY 
+  c.Culture_ID, 
+  c.Name
+HAVING 
+  AVG(f.Area) > (
+    SELECT AVG(Area) 
+    FROM Farm
+  );
 
 
-SELECT f.Name AS FarmName, c.Name AS CultureName
-FROM Farm f
-LEFT JOIN Culture c ON f.Culture_ID = c.Culture_ID;
+SELECT 
+  w.Name        AS EntityName,
+  b.Name        AS BrigadeName,
+  f.Name        AS FarmName,
+  'Worker'      AS EntityType
+FROM Worker   AS w
+JOIN Brigade  AS b ON w.Brigade_ID = b.Brigade_ID
+                  AND w.Farm_ID    = b.Farm_ID
+JOIN Farm     AS f ON b.Farm_ID    = f.Farm_ID
+WHERE w.Status = 'Active'
 
-SELECT w.Name, w.Surname, tr.Transaction_type
-FROM Worker w
-LEFT JOIN Transaction tr ON w.Transaction_ID = tr.Transaction_ID;
+UNION
 
-SELECT t.Name AS TechName, b.Name AS BrigadeName
-FROM Brigade b
-RIGHT JOIN Tech t ON t.Brigade_ID = b.Brigade_ID AND t.Farm_ID = b.Farm_ID;
+SELECT 
+  t.Name        AS EntityName,
+  b.Name        AS BrigadeName,
+  f.Name        AS FarmName,
+  'Tech'        AS EntityType
+FROM Tech     AS t
+JOIN Brigade  AS b ON t.Brigade_ID = b.Brigade_ID
+                  AND t.Farm_ID    = b.Farm_ID
+JOIN Farm     AS f ON b.Farm_ID    = f.Farm_ID
+WHERE t.Status = 'Working';
+GO
 
-SELECT b.Name AS BrigadeName, w.Name AS WorkerName
-FROM Brigade b
-LEFT JOIN Worker w ON w.Brigade_ID = b.Brigade_ID AND w.Farm_ID = b.Farm_ID;
 
-SELECT c.Name AS CultureName, f.Name AS FarmName
-FROM Culture c
-RIGHT JOIN Farm f ON f.Culture_ID = c.Culture_ID;
+--2
+
+
+SELECT * FROM Department;
+SELECT * FROM Employee;
+SELECT * FROM Equipment;
+
+DELETE FROM Department WHERE Dept_ID = 1;
+
+UPDATE Department SET Dept_ID = 101 WHERE Dept_ID = 2;
 
 
 SELECT * FROM Worker
-WHERE Salary > (SELECT AVG(Salary) FROM Worker);
+ORDER BY Salary ASC;
 
 SELECT * FROM Farm
-WHERE Culture_ID IN (SELECT Culture_ID FROM Culture WHERE Season = 'Весна');
-
-SELECT * FROM Transaction
-WHERE Money_transfer > (SELECT MAX(Money_transfer) FROM Transaction WHERE Transaction_type = 'Зарплата');
-
-SELECT Name, Area FROM Farm
-WHERE Farm_ID IN (SELECT Farm_ID FROM Brigade WHERE Workers_amount > 20);
+ORDER BY Area DESC;
 
 SELECT * FROM Tech
-WHERE Transaction_ID IN (SELECT Transaction_ID FROM Transaction WHERE Transaction_type = 'Ремонт');
+ORDER BY Purchase_Date DESC;
+
+SELECT * FROM Culture
+ORDER BY Amount DESC;
+
+SELECT * FROM [Transaction]
+ORDER BY Money_transfer DESC;
+
+SELECT * FROM Worker
+ORDER BY Surname ASC, Name ASC;
 
 
-SELECT f.Culture_ID, COUNT(*) AS FarmCount
-FROM Farm f
-GROUP BY f.Culture_ID
-HAVING COUNT(*) > 1;
+SELECT * FROM Worker
+WHERE Salary > 10000 AND Status = 'Active';
 
-SELECT w.Position, COUNT(*) AS WorkerCount
-FROM Worker w
-GROUP BY w.Position
-HAVING WorkerCount > 10;
+SELECT * FROM Farm
+WHERE Area >= 150 OR Culture_ID < 3;
 
-SELECT b.Farm_ID, AVG(b.Workers_amount) AS AvgWorkers
-FROM Brigade b
-GROUP BY b.Farm_ID
-HAVING AvgWorkers > 15;
+SELECT * FROM Tech
+WHERE NOT Status = 'Working';
 
-SELECT t.Status, COUNT(*) AS TechCount
-FROM Tech t
-GROUP BY t.Status
-HAVING COUNT(*) >= 5;
+SELECT * FROM [Transaction]
+WHERE Money_transfer <> 0;
 
-SELECT c.Fertilizers, COUNT(f.Farm_ID) AS FarmCount
-FROM Culture c
-JOIN Farm f ON c.Culture_ID = f.Culture_ID
-GROUP BY c.Fertilizers
-HAVING FarmCount > 2;
+SELECT * FROM Culture
+WHERE Season = 'Spring' AND Amount <= 30;
 
-
-SELECT c.Season, COUNT(f.Farm_ID) AS FarmCount
-FROM Culture c
-JOIN Farm f ON f.Culture_ID = c.Culture_ID
-GROUP BY c.Season
-HAVING FarmCount >= 1;
-
-SELECT w.Name, w.Surname, w.Salary
-FROM Worker w
-JOIN Brigade b ON w.Brigade_ID = b.Brigade_ID AND w.Farm_ID = b.Farm_ID
-WHERE w.Salary > (SELECT AVG(Salary) FROM Worker);
-
-SELECT t.Name AS TechName, t.Status, tr.Money_transfer
-FROM Tech t
-JOIN Transaction tr ON t.Transaction_ID = tr.Transaction_ID
-WHERE tr.Money_transfer > 20000;
-
-SELECT f.Name AS FarmName, AVG(w.Salary) AS AvgSalary
-FROM Farm f
-JOIN Brigade b ON f.Farm_ID = b.Farm_ID
-JOIN Worker w ON w.Brigade_ID = b.Brigade_ID AND w.Farm_ID = b.Farm_ID
-GROUP BY f.Farm_ID
-HAVING AvgSalary > 10000;
-
-SELECT c.Name AS CultureName, COUNT(f.Farm_ID) AS FarmCount
-FROM Culture c
-JOIN Farm f ON f.Culture_ID = c.Culture_ID
-WHERE f.Area > 100
-GROUP BY c.Culture_ID
-HAVING FarmCount >= 2;
-
-
-SELECT w.Name, w.Surname, b.Name AS BrigadeName
-FROM Worker w
-JOIN Brigade b ON w.Brigade_ID = b.Brigade_ID AND w.Farm_ID = b.Farm_ID
-WHERE w.Status = 'Активний';
-
-SELECT f.Name AS FarmName, c.Name AS CultureName
-FROM Farm f
-JOIN Culture c ON f.Culture_ID = c.Culture_ID
-WHERE c.Season = 'Весна';
-
-SELECT t.Name AS TechName, tr.Money_transfer
-FROM Tech t
-JOIN Transaction tr ON t.Transaction_ID = tr.Transaction_ID
-WHERE tr.Money_transfer > 20000;
-
-SELECT MIN(b.Name) AS BrigadeName, COUNT(w.Worker_ID) AS WorkerCount
-FROM Brigade b
-JOIN Worker w ON w.Brigade_ID = b.Brigade_ID AND w.Farm_ID = b.Farm_ID
-WHERE w.Salary > 10000
-GROUP BY b.Brigade_ID;
-
-SELECT w.Name, w.Surname, tr.Transaction_type
-FROM Worker w
-JOIN Transaction tr ON w.Transaction_ID = tr.Transaction_ID
-WHERE tr.Transaction_type = 'Зарплата';
+SELECT * FROM Worker
+WHERE Position = 'Tractor driver' OR Position = 'Agronomist';
