@@ -1,0 +1,87 @@
+USE FarmDB;
+GO
+
+-- Таблица Culture
+CREATE TABLE Culture (
+    Culture_ID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Season VARCHAR(50),
+    Amount INT,
+    Fertilizers VARCHAR(50)
+);
+GO
+
+-- Таблица Farm
+CREATE TABLE Farm (
+    Farm_ID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Area INT,
+    Culture_ID INT FOREIGN KEY REFERENCES Culture(Culture_ID)
+);
+GO
+
+-- Таблица Brigade
+CREATE TABLE Brigade (
+    Brigade_ID INT,
+    Farm_ID INT,
+    Name VARCHAR(50),
+    Workers_amount INT,
+    PRIMARY KEY (Brigade_ID, Farm_ID),
+    FOREIGN KEY (Farm_ID) REFERENCES Farm(Farm_ID)
+);
+GO
+
+-- Таблица Transaction
+CREATE TABLE [Transaction] (
+    Transaction_ID INT PRIMARY KEY,
+    Transaction_Date DATE,
+    Money_transfer DECIMAL(10,2),
+    Transaction_type VARCHAR(50)
+);
+GO
+
+-- Таблица Worker без внешнего ключа на Brigadir_ID
+CREATE TABLE Worker (
+    Worker_ID INT,
+    Brigade_ID INT,
+    Farm_ID INT,
+    Brigadir_ID INT NULL,
+    Name VARCHAR(50),
+    Surname VARCHAR(50),
+    Position VARCHAR(50),
+    Rescue_Date DATE,
+    Salary DECIMAL(10,2),
+    Status VARCHAR(50),
+    Transaction_ID INT NULL,
+    PRIMARY KEY (Worker_ID, Brigade_ID, Farm_ID),
+    FOREIGN KEY (Brigade_ID, Farm_ID) REFERENCES Brigade(Brigade_ID, Farm_ID),
+    FOREIGN KEY (Transaction_ID) REFERENCES [Transaction](Transaction_ID)
+);
+GO
+
+-- Добавляем уникальность на Worker_ID
+ALTER TABLE Worker
+ADD CONSTRAINT UQ_WorkerID UNIQUE (Worker_ID);
+GO
+
+-- Теперь можно создать внешний ключ на Brigadir_ID
+ALTER TABLE Worker
+ADD CONSTRAINT FK_Brigadir
+FOREIGN KEY (Brigadir_ID) REFERENCES Worker(Worker_ID);
+GO
+
+-- Таблица Tech
+CREATE TABLE Tech (
+    Tech_ID INT,
+    Brigade_ID INT,
+    Farm_ID INT,
+    Name VARCHAR(50),
+    Type VARCHAR(50),
+    Purchase_Date DATE,
+    Status VARCHAR(50),
+    Transaction_ID INT,
+    PRIMARY KEY (Tech_ID, Brigade_ID, Farm_ID),
+    FOREIGN KEY (Brigade_ID, Farm_ID) REFERENCES Brigade(Brigade_ID, Farm_ID),
+    FOREIGN KEY (Transaction_ID) REFERENCES [Transaction](Transaction_ID)
+);
+GO
