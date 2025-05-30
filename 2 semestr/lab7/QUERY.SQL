@@ -1,4 +1,4 @@
--- 1
+﻿-- 1
 SELECT * 
 FROM [Culture] 
 WHERE [Amount] > 30;
@@ -437,8 +437,39 @@ ORDER BY Tech_ID DESC;
 SELECT COUNT(*) AS TotalWorkers FROM Worker;
 
 
+--lab7 перевірка
+INSERT INTO Worker (Worker_ID, Brigade_ID, Farm_ID, Name, Surname, Position, Rescue_Date, Salary, Status)
+VALUES (999, 1, 1, 'Test', 'User', 'Engineer', GETDATE(), 12000, 'Active');
 
+SELECT * FROM LogTable;
 
+UPDATE Tech
+SET Status = 'Working'
+WHERE Tech_ID = 1 AND Brigade_ID = 1 AND Farm_ID = 1;
 
+UPDATE Tech
+SET Status = 'Broken'
+WHERE Tech_ID = 1 AND Brigade_ID = 1 AND Farm_ID = 1;
+
+SELECT * FROM LogTable;
+
+SELECT Tech_ID, Brigade_ID, Farm_ID, Status
+FROM Tech
+WHERE Tech_ID = 1 AND Brigade_ID = 1 AND Farm_ID = 1;
+
+SELECT * FROM [Transaction] WHERE Transaction_ID = 1;
+DELETE FROM [Transaction] WHERE Transaction_ID = 1;
+SELECT * FROM [Transaction] WHERE Transaction_ID = 1;
+
+INSERT INTO Farm (Farm_ID, Name, Area, Culture_ID)
+VALUES (9999, 'Test Farm', 5, 1);
+SELECT * FROM Farm WHERE Farm_ID = 9999;
+
+CREATE TABLE TestDDL (ID INT);
+DROP TABLE TestDDL;
+ALTER TABLE Farm ADD TestField INT NULL;
+SELECT * FROM DDL_Log;
+
+SELECT * FROM master.dbo.Logon_Log ORDER BY LogonTime DESC;
 
 
